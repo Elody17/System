@@ -1,0 +1,123 @@
+drop table systemuser;
+drop table 报废表;
+drop table 出租表;
+drop table 调拨表;
+drop table 领用表;
+drop table 企业表;
+drop table 部门表;
+drop table 资产数据表;
+
+create table systemuser(
+name char(20),
+password char(50)
+);
+
+insert into systemuser values('wang','1111');
+insert into systemuser values('zhang','2222');
+insert into systemuser values('li','3333');
+
+
+create table 资产数据表
+(资产代码 char(10) primary key,
+资产名称 varchar(40) not null,
+资产类型 varchar(40),
+规格型号 char(20),
+资产单位 varchar(40),
+制造厂家 varchar(40),
+购置日期 char(12),
+资产原值 char(10) 
+);
+
+insert into 资产数据表 values ('0001','相机','专用设备','K135','明日科技','索尼','2015-02-07','3680');
+insert into 资产数据表 values ('0002','键盘','办公设备','T564','明日科技','联想','2014-11-02','184');
+insert into 资产数据表 values ('0003','汽车','运输设备','U963','明日科技','丰田','2013-04-30','162316');
+insert into 资产数据表 values ('0004','电脑','办公设备','G510','明日科技','苹果','2014-08-12','12041');
+insert into 资产数据表 values ('0005','鼠标','办公设备','J365','明日科技','戴尔','2015-04-05','78');
+insert into 资产数据表 values ('0006','打印机','办公设备','D348','明日科技','佳能','2014-07-31','486');
+
+
+create table 部门表(
+部门编号 char(10) primary key,
+部门名称 char(20) not null);
+ 
+insert into 部门表 values('01','销售部');
+insert into 部门表 values('02','技术部');
+insert into 部门表 values('03','人力资源部 ');
+insert into 部门表 values('04','生产部');
+insert into 部门表 values('05','质管部');
+insert into 部门表 values('06','财务部');
+
+
+create table 企业表(
+企业代码 char(10) primary key,
+企业名称 char(40) not null);
+
+insert into 企业表 values('001','中粮地产');
+insert into 企业表 values('002','上海证大');
+insert into 企业表 values('003','亿城集团');
+insert into 企业表 values('004','奥园地产');
+insert into 企业表 values('005','天津泰达');
+insert into 企业表 values('006','中国宝安');
+insert into 企业表 values('007','富国银行');
+
+
+create table 领用表(
+资产代码 char(10) not null,
+部门编号 char(10) not null,
+领用日期 char(12),
+经办人 char(20),
+primary key(资产代码,部门编号),
+foreign key(资产代码)references 资产数据表(资产代码),
+foreign key(部门编号)references 部门表(部门编号)
+);
+
+
+create table 调拨表(
+资产代码 char(10) not null,
+调入部门编号 char(10) not null,
+调拨日期 char(12),
+调出部门编号 char(10) not null,
+经办人 char(20),
+primary key(资产代码,调入部门编号,调出部门编号),
+foreign key(资产代码)references 资产数据表(资产代码),
+foreign key(调入部门编号)references 部门表(部门编号),
+foreign key(调出部门编号)references 部门表(部门编号)
+);
+
+
+create table 出租表(
+资产代码 char(10),
+企业代码 char(10),
+租赁费用 char(10),
+出租日期 char(12),
+经办人 char(20),
+primary key(资产代码,企业代码),
+foreign key(资产代码)references 资产数据表(资产代码),
+foreign key(企业代码)references 企业表(企业代码)
+);
+
+
+create table 报废表(
+资产代码 char(10) primary key,
+资产残值 char(10),
+报废原因 varchar(50),
+报废日期 char(12),
+经办人 char(20),
+foreign key(资产代码)references 资产数据表(资产代码)
+);
+
+select * from systemuser;
+select * from 资产数据表;
+
+select * from 部门表;
+
+select * from 企业表;
+
+select * from 领用表;
+
+select * from 调拨表;
+
+select * from 出租表;
+
+select * from 报废表;
+commit;
